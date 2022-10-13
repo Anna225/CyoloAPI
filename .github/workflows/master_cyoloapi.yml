@@ -53,5 +53,5 @@ jobs:
         with:
           app-name: 'cyoloAPI'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_7EAF59A969114505AB4678C5D7D0894E }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_948E8D9E11AA432895B412D0F5EB73A3 }}
           package: .
