@@ -57,7 +57,7 @@ namespace LawyerAPI.Controllers
                            join courtcase in _context.CourtCaseAgenda
                            on new { Name = lawyer.Name, Surename = lawyer.SureName }
                            equals new { Name = courtcase.LawyerName, Surename = courtcase.LawyerSurename }
-                           where (courtcase.CourtCaseNo!.Contains(queryParam))
+                           where (courtcase.CourtCaseNo!.Replace(" ", "")!.Contains(queryParam.Replace(" ", "")))
                            select new { lawyer, courtcase }).Distinct();
 
             if (lawyers == null)
