@@ -1,9 +1,10 @@
-﻿using LawyerAPI.Models;
+using LawyerAPI.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using Microsoft.AspNetCore.Http.Extensions;
 
 namespace LawyerAPI.Controllers
 {
@@ -18,10 +19,24 @@ namespace LawyerAPI.Controllers
             _context = context;
         }
 
+        private bool checkURL(string currentUrl)
+        {
+            if (currentUrl.Contains(".azurewebsites.net"))
+            {
+                return false;
+            }
+            return true;
+        }
+
         // GET: api/Custom/CourtCaseByDateAndCourtName/2022-10-03/democourtname
         [HttpGet("CourtCaseByDateAndCourtName/{date}/{courtname}")]
         public async Task<ActionResult<List<CourtCaseAgenda?>>> GetCourtCaseByDateAndCourtName(string date, string courtname)
         {
+            if (checkURL(HttpContext.Request.GetDisplayUrl()))
+            {
+                return BadRequest();
+            }
+
             return await _context.CourtCaseAgenda.AsNoTracking()
                 .Where(x => x.HearingDateTime == date && (x.HearingGeneral!.Contains(courtname)))
                 .GroupBy(x => x.HearingGeneral)
@@ -33,6 +48,11 @@ namespace LawyerAPI.Controllers
         [HttpGet("CourtCaseByDateAndEmail/{date}/{lawyeremail}")]
         public async Task<ActionResult<IEnumerable<dynamic>>> GetCourtCaseByDateAndEmail(string date, string lawyeremail)
         {
+            if (checkURL(HttpContext.Request.GetDisplayUrl()))
+            {
+                return BadRequest();
+            }
+
             var lawyers = (from courtcase in _context.CourtCaseAgenda
                            join lawyer in _context.Lawyers
                            on new { LawyerName = courtcase.LawyerName, LawyerSurename = courtcase.LawyerSurename }
@@ -52,6 +72,11 @@ namespace LawyerAPI.Controllers
         [HttpGet("LawyersByCourtCaseId/{courtcaseid}")]
         public async Task<ActionResult<IEnumerable<dynamic>>> GetLawyersByCourtCaseId(string courtcaseid)
         {
+            if (checkURL(HttpContext.Request.GetDisplayUrl()))
+            {
+                return BadRequest();
+            }
+
             var queryParam = System.Uri.UnescapeDataString(courtcaseid);
             var lawyers = (from lawyer in _context.Lawyers
                            join courtcase in _context.CourtCaseAgenda
@@ -71,6 +96,11 @@ namespace LawyerAPI.Controllers
         [HttpGet("AllCourtCasesByDate/{date}")]
         public async Task<ActionResult<List<CourtCaseAgenda?>>> GetAllCourtCasesByDate(string date)
         {
+            if (checkURL(HttpContext.Request.GetDisplayUrl()))
+            {
+                return BadRequest();
+            }
+
             return await _context.CourtCaseAgenda.AsNoTracking()
                 .Where(x => x.HearingDateTime == date)
                 .GroupBy(x => x.CourtCaseNo)
@@ -82,6 +112,11 @@ namespace LawyerAPI.Controllers
         [HttpGet("CourtCaseByDateAndName/{date}/{lawyername}")]
         public async Task<ActionResult<IEnumerable<dynamic>>> GetCourtCaseByDateAndName(string date, string lawyername)
         {
+            if (checkURL(HttpContext.Request.GetDisplayUrl()))
+            {
+                return BadRequest();
+            }
+
             var lawyers = (from courtcase in _context.CourtCaseAgenda
                            join lawyer in _context.Lawyers
                            on new { LawyerName = courtcase.LawyerName, LawyerSurename = courtcase.LawyerSurename }
@@ -101,6 +136,11 @@ namespace LawyerAPI.Controllers
         [HttpGet("CourtCaseByDateAndPhone/{date}/{phone}")]
         public async Task<ActionResult<IEnumerable<dynamic>>> GetCourtCaseByDateAndPhone(string date, string phone)
         {
+            if (checkURL(HttpContext.Request.GetDisplayUrl()))
+            {
+                return BadRequest();
+            }
+
             var lawyers = (from courtcase in _context.CourtCaseAgenda
                            join lawyer in _context.Lawyers
                            on new { LawyerName = courtcase.LawyerName, LawyerSurename = courtcase.LawyerSurename }
