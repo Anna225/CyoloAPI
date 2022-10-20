@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using LawyerAPI.Models;
+using Microsoft.AspNetCore.Http.Extensions;
 
 namespace LawyerAPI.Controllers
 {
@@ -20,11 +21,26 @@ namespace LawyerAPI.Controllers
             _context = context;
         }
 
+        private bool checkURL(string currentUrl)
+        {
+            if (currentUrl.Contains(".azurewebsites.net"))
+            {
+                return false;
+            }
+            return true;
+        }
+
         // GET: api/Courts
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Court>>> GetCourts()
         {
-          if (_context.Courts == null)
+
+            if (checkURL(HttpContext.Request.GetDisplayUrl()))
+            {
+                return BadRequest();
+            }
+
+            if (_context.Courts == null)
           {
               return NotFound();
           }
@@ -35,7 +51,13 @@ namespace LawyerAPI.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Court>> GetCourt(int id)
         {
-          if (_context.Courts == null)
+
+            if (checkURL(HttpContext.Request.GetDisplayUrl()))
+            {
+                return BadRequest();
+            }
+
+            if (_context.Courts == null)
           {
               return NotFound();
           }
@@ -54,6 +76,12 @@ namespace LawyerAPI.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCourt(int id, Court court)
         {
+
+            if (checkURL(HttpContext.Request.GetDisplayUrl()))
+            {
+                return BadRequest();
+            }
+
             if (id != court.ID)
             {
                 return BadRequest();
@@ -85,7 +113,13 @@ namespace LawyerAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<Court>> PostCourt(Court court)
         {
-          if (_context.Courts == null)
+
+            if (checkURL(HttpContext.Request.GetDisplayUrl()))
+            {
+                return BadRequest();
+            }
+
+            if (_context.Courts == null)
           {
               return Problem("Entity set 'LawyerDbContext.Courts'  is null.");
           }
@@ -99,6 +133,12 @@ namespace LawyerAPI.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCourt(int id)
         {
+
+            if (checkURL(HttpContext.Request.GetDisplayUrl()))
+            {
+                return BadRequest();
+            }
+
             if (_context.Courts == null)
             {
                 return NotFound();
