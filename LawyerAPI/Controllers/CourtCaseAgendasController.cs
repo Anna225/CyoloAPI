@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using LawyerAPI.Models;
+using Microsoft.AspNetCore.Http.Extensions;
 
 namespace LawyerAPI.Controllers
 {
@@ -20,10 +21,25 @@ namespace LawyerAPI.Controllers
             _context = context;
         }
 
+        private bool checkURL(string currentUrl)
+        {
+            if (currentUrl.Contains(".azurewebsites.net"))
+            {
+                return false;
+            }
+            return true;
+        }
+
         // GET: api/CourtCaseAgendas
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CourtCaseAgenda>>> GetCourtCaseAgenda()
         {
+
+            if (checkURL(HttpContext.Request.GetDisplayUrl()))
+            {
+                return BadRequest();
+            }
+
             return await _context.CourtCaseAgenda.ToListAsync();
         }
 
@@ -31,6 +47,12 @@ namespace LawyerAPI.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<CourtCaseAgenda>> GetCourtCaseAgenda(int id)
         {
+
+            if (checkURL(HttpContext.Request.GetDisplayUrl()))
+            {
+                return BadRequest();
+            }
+
             var courtCaseAgenda = await _context.CourtCaseAgenda.FindAsync(id);
 
             if (courtCaseAgenda == null)
@@ -46,6 +68,12 @@ namespace LawyerAPI.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCourtCaseAgenda(int id, CourtCaseAgenda courtCaseAgenda)
         {
+
+            if (checkURL(HttpContext.Request.GetDisplayUrl()))
+            {
+                return BadRequest();
+            }
+
             if (id != courtCaseAgenda.ID)
             {
                 return BadRequest();
@@ -77,6 +105,12 @@ namespace LawyerAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<CourtCaseAgenda>> PostCourtCaseAgenda(CourtCaseAgenda courtCaseAgenda)
         {
+
+            if (checkURL(HttpContext.Request.GetDisplayUrl()))
+            {
+                return BadRequest();
+            }
+
             _context.CourtCaseAgenda.Add(courtCaseAgenda);
             await _context.SaveChangesAsync();
 
@@ -87,6 +121,12 @@ namespace LawyerAPI.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCourtCaseAgenda(int id)
         {
+
+            if (checkURL(HttpContext.Request.GetDisplayUrl()))
+            {
+                return BadRequest();
+            }
+
             var courtCaseAgenda = await _context.CourtCaseAgenda.FindAsync(id);
             if (courtCaseAgenda == null)
             {
