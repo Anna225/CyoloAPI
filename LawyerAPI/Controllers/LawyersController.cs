@@ -20,9 +20,9 @@ namespace LawyerAPI.Controllers
         {
             if (currentUrl.Contains(".azurewebsites.net"))
             {
-                return false;
+                return true;
             }
-            return true;
+            return false;
         }
 
         public LawyersController(LawyerDbContext context)
