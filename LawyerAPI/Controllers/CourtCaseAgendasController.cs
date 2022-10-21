@@ -35,7 +35,7 @@ namespace LawyerAPI.Controllers
         public async Task<ActionResult<IEnumerable<CourtCaseAgenda>>> GetCourtCaseAgenda()
         {
 
-            if (checkURL(HttpContext.Request.GetDisplayUrl()))
+            if (!CheckHeaderData("ocp-apim-subscription-key") )
             {
                 return BadRequest();
             }
@@ -48,7 +48,7 @@ namespace LawyerAPI.Controllers
         public async Task<ActionResult<CourtCaseAgenda>> GetCourtCaseAgenda(int id)
         {
 
-            if (checkURL(HttpContext.Request.GetDisplayUrl()))
+            if (!CheckHeaderData("ocp-apim-subscription-key") )
             {
                 return BadRequest();
             }
@@ -69,7 +69,7 @@ namespace LawyerAPI.Controllers
         public async Task<IActionResult> PutCourtCaseAgenda(int id, CourtCaseAgenda courtCaseAgenda)
         {
 
-            if (checkURL(HttpContext.Request.GetDisplayUrl()))
+            if (!CheckHeaderData("ocp-apim-subscription-key") )
             {
                 return BadRequest();
             }
@@ -106,7 +106,7 @@ namespace LawyerAPI.Controllers
         public async Task<ActionResult<CourtCaseAgenda>> PostCourtCaseAgenda(CourtCaseAgenda courtCaseAgenda)
         {
 
-            if (checkURL(HttpContext.Request.GetDisplayUrl()))
+            if (!CheckHeaderData("ocp-apim-subscription-key") )
             {
                 return BadRequest();
             }
@@ -122,7 +122,7 @@ namespace LawyerAPI.Controllers
         public async Task<IActionResult> DeleteCourtCaseAgenda(int id)
         {
 
-            if (checkURL(HttpContext.Request.GetDisplayUrl()))
+            if (!CheckHeaderData("ocp-apim-subscription-key") )
             {
                 return BadRequest();
             }
@@ -142,6 +142,16 @@ namespace LawyerAPI.Controllers
         private bool CourtCaseAgendaExists(int id)
         {
             return _context.CourtCaseAgenda.Any(e => e.ID == id);
+        }
+        
+         private bool CheckHeaderData(string headerKey)
+        {
+            HttpContext.Request.Headers.TryGetValue(headerKey, out var headerValue);
+            if (headerValue == "d23d9c7c11da4b228417e567c85fa80c")
+            {
+                return true;
+            }
+            return false;
         }
     }
 }
