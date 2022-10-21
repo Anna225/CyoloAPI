@@ -20,6 +20,16 @@ namespace LawyerAPI.Controllers
         {
             _context = context;
         }
+        
+        private bool CheckHeaderData(string headerKey)
+        {
+            HttpContext.Request.Headers.TryGetValue(headerKey, out var headerValue);
+            if (headerValue == "d23d9c7c11da4b228417e567c85fa80c")
+            {
+                return true;
+            }
+            return false;
+        }
 
         private bool checkURL(string currentUrl)
         {
@@ -35,7 +45,7 @@ namespace LawyerAPI.Controllers
         public async Task<ActionResult<IEnumerable<Court>>> GetCourts()
         {
 
-            if (checkURL(HttpContext.Request.GetDisplayUrl()))
+            if (!CheckHeaderData("ocp-apim-subscription-key") )
             {
                 return BadRequest();
             }
@@ -52,7 +62,7 @@ namespace LawyerAPI.Controllers
         public async Task<ActionResult<Court>> GetCourt(int id)
         {
 
-            if (checkURL(HttpContext.Request.GetDisplayUrl()))
+            if (!CheckHeaderData("ocp-apim-subscription-key") )
             {
                 return BadRequest();
             }
@@ -77,7 +87,7 @@ namespace LawyerAPI.Controllers
         public async Task<IActionResult> PutCourt(int id, Court court)
         {
 
-            if (checkURL(HttpContext.Request.GetDisplayUrl()))
+            if (!CheckHeaderData("ocp-apim-subscription-key") )
             {
                 return BadRequest();
             }
@@ -114,7 +124,7 @@ namespace LawyerAPI.Controllers
         public async Task<ActionResult<Court>> PostCourt(Court court)
         {
 
-            if (checkURL(HttpContext.Request.GetDisplayUrl()))
+            if (!CheckHeaderData("ocp-apim-subscription-key") )
             {
                 return BadRequest();
             }
@@ -134,7 +144,7 @@ namespace LawyerAPI.Controllers
         public async Task<IActionResult> DeleteCourt(int id)
         {
 
-            if (checkURL(HttpContext.Request.GetDisplayUrl()))
+            if (!CheckHeaderData("ocp-apim-subscription-key") )
             {
                 return BadRequest();
             }
