@@ -35,7 +35,7 @@ namespace LawyerAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Lawyer>>> GetLawyers()
         {
-            if (checkURL(HttpContext.Request.GetDisplayUrl()))
+            if (!CheckHeaderData("ocp-apim-subscription-key") )
             {
                 return BadRequest();
             }
@@ -58,11 +58,6 @@ namespace LawyerAPI.Controllers
             */
             
             if (!CheckHeaderData("ocp-apim-subscription-key") )
-            {
-                return BadRequest();
-            }
-
-            if (checkURL(HttpContext.Request.GetDisplayUrl()))
             {
                 return BadRequest();
             }
@@ -91,7 +86,7 @@ namespace LawyerAPI.Controllers
                 return BadRequest();
             }
 
-            if (checkURL(HttpContext.Request.GetDisplayUrl()))
+            if (!CheckHeaderData("ocp-apim-subscription-key") )
             {
                 return BadRequest();
             }
@@ -122,7 +117,7 @@ namespace LawyerAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<Lawyer>> PostLawyer(Lawyer lawyer)
         {
-            if (checkURL(HttpContext.Request.GetDisplayUrl()))
+            if (!CheckHeaderData("ocp-apim-subscription-key") )
             {
                 return BadRequest();
             }
@@ -141,7 +136,7 @@ namespace LawyerAPI.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCourt(int id)
         {
-            if (checkURL(HttpContext.Request.GetDisplayUrl()))
+            if (!CheckHeaderData("ocp-apim-subscription-key") )
             {
                 return BadRequest();
             }
