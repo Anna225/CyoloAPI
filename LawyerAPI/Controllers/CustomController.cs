@@ -32,7 +32,7 @@ namespace LawyerAPI.Controllers
         [HttpGet("CourtCaseByDateAndCourtName/{date}/{courtname}")]
         public async Task<ActionResult<List<CourtCaseAgenda?>>> GetCourtCaseByDateAndCourtName(string date, string courtname)
         {
-            if (checkURL(HttpContext.Request.GetDisplayUrl()))
+            if (!CheckHeaderData("ocp-apim-subscription-key") )
             {
                 return BadRequest();
             }
@@ -48,7 +48,7 @@ namespace LawyerAPI.Controllers
         [HttpGet("CourtCaseByDateAndEmail/{date}/{lawyeremail}")]
         public async Task<ActionResult<IEnumerable<dynamic>>> GetCourtCaseByDateAndEmail(string date, string lawyeremail)
         {
-            if (checkURL(HttpContext.Request.GetDisplayUrl()))
+            if (!CheckHeaderData("ocp-apim-subscription-key") )
             {
                 return BadRequest();
             }
@@ -72,7 +72,7 @@ namespace LawyerAPI.Controllers
         [HttpGet("LawyersByCourtCaseId/{courtcaseid}")]
         public async Task<ActionResult<IEnumerable<dynamic>>> GetLawyersByCourtCaseId(string courtcaseid)
         {
-            if (checkURL(HttpContext.Request.GetDisplayUrl()))
+            if (!CheckHeaderData("ocp-apim-subscription-key") )
             {
                 return BadRequest();
             }
@@ -96,7 +96,7 @@ namespace LawyerAPI.Controllers
         [HttpGet("AllCourtCasesByDate/{date}")]
         public async Task<ActionResult<List<CourtCaseAgenda?>>> GetAllCourtCasesByDate(string date)
         {
-            if (checkURL(HttpContext.Request.GetDisplayUrl()))
+            if (!CheckHeaderData("ocp-apim-subscription-key") )
             {
                 return BadRequest();
             }
@@ -112,7 +112,7 @@ namespace LawyerAPI.Controllers
         [HttpGet("CourtCaseByDateAndName/{date}/{lawyername}")]
         public async Task<ActionResult<IEnumerable<dynamic>>> GetCourtCaseByDateAndName(string date, string lawyername)
         {
-            if (checkURL(HttpContext.Request.GetDisplayUrl()))
+            if (!CheckHeaderData("ocp-apim-subscription-key") )
             {
                 return BadRequest();
             }
@@ -136,7 +136,7 @@ namespace LawyerAPI.Controllers
         [HttpGet("CourtCaseByDateAndPhone/{date}/{phone}")]
         public async Task<ActionResult<IEnumerable<dynamic>>> GetCourtCaseByDateAndPhone(string date, string phone)
         {
-            if (checkURL(HttpContext.Request.GetDisplayUrl()))
+            if (!CheckHeaderData("ocp-apim-subscription-key") )
             {
                 return BadRequest();
             }
@@ -154,6 +154,16 @@ namespace LawyerAPI.Controllers
                 return NotFound();
             }
             return await lawyers.ToListAsync();
+        }
+        
+        private bool CheckHeaderData(string headerKey)
+        {
+            HttpContext.Request.Headers.TryGetValue(headerKey, out var headerValue);
+            if (headerValue == "d23d9c7c11da4b228417e567c85fa80c")
+            {
+                return true;
+            }
+            return false;
         }
 
     }
