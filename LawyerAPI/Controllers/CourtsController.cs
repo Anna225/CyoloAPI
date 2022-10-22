@@ -45,12 +45,7 @@ namespace LawyerAPI.Controllers
         public async Task<ActionResult<IEnumerable<Court>>> GetCourts()
         {
 
-            if (!CheckHeaderData("ocp-apim-subscription-key") )
-            {
-                return BadRequest();
-            }
-
-            if (_context.Courts == null)
+          if (_context.Courts == null)
           {
               return NotFound();
           }
@@ -62,12 +57,7 @@ namespace LawyerAPI.Controllers
         public async Task<ActionResult<Court>> GetCourt(int id)
         {
 
-            if (!CheckHeaderData("ocp-apim-subscription-key") )
-            {
-                return BadRequest();
-            }
-
-            if (_context.Courts == null)
+          if (_context.Courts == null)
           {
               return NotFound();
           }
@@ -86,11 +76,6 @@ namespace LawyerAPI.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCourt(int id, Court court)
         {
-
-            if (!CheckHeaderData("ocp-apim-subscription-key") )
-            {
-                return BadRequest();
-            }
 
             if (id != court.ID)
             {
@@ -124,12 +109,7 @@ namespace LawyerAPI.Controllers
         public async Task<ActionResult<Court>> PostCourt(Court court)
         {
 
-            if (!CheckHeaderData("ocp-apim-subscription-key") )
-            {
-                return BadRequest();
-            }
-
-            if (_context.Courts == null)
+          if (_context.Courts == null)
           {
               return Problem("Entity set 'LawyerDbContext.Courts'  is null.");
           }
@@ -143,11 +123,6 @@ namespace LawyerAPI.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCourt(int id)
         {
-
-            if (!CheckHeaderData("ocp-apim-subscription-key") )
-            {
-                return BadRequest();
-            }
 
             if (_context.Courts == null)
             {
