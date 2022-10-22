@@ -34,12 +34,6 @@ namespace LawyerAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CourtCaseAgenda>>> GetCourtCaseAgenda()
         {
-
-            if (!CheckHeaderData("ocp-apim-subscription-key") )
-            {
-                return BadRequest();
-            }
-
             return await _context.CourtCaseAgenda.ToListAsync();
         }
 
@@ -47,12 +41,6 @@ namespace LawyerAPI.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<CourtCaseAgenda>> GetCourtCaseAgenda(int id)
         {
-
-            if (!CheckHeaderData("ocp-apim-subscription-key") )
-            {
-                return BadRequest();
-            }
-
             var courtCaseAgenda = await _context.CourtCaseAgenda.FindAsync(id);
 
             if (courtCaseAgenda == null)
@@ -68,11 +56,6 @@ namespace LawyerAPI.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCourtCaseAgenda(int id, CourtCaseAgenda courtCaseAgenda)
         {
-
-            if (!CheckHeaderData("ocp-apim-subscription-key") )
-            {
-                return BadRequest();
-            }
 
             if (id != courtCaseAgenda.ID)
             {
@@ -105,12 +88,6 @@ namespace LawyerAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<CourtCaseAgenda>> PostCourtCaseAgenda(CourtCaseAgenda courtCaseAgenda)
         {
-
-            if (!CheckHeaderData("ocp-apim-subscription-key") )
-            {
-                return BadRequest();
-            }
-
             _context.CourtCaseAgenda.Add(courtCaseAgenda);
             await _context.SaveChangesAsync();
 
@@ -121,12 +98,6 @@ namespace LawyerAPI.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCourtCaseAgenda(int id)
         {
-
-            if (!CheckHeaderData("ocp-apim-subscription-key") )
-            {
-                return BadRequest();
-            }
-
             var courtCaseAgenda = await _context.CourtCaseAgenda.FindAsync(id);
             if (courtCaseAgenda == null)
             {
