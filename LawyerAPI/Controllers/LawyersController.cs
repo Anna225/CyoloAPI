@@ -35,12 +35,7 @@ namespace LawyerAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Lawyer>>> GetLawyers()
         {
-            if (!CheckHeaderData("ocp-apim-subscription-key") )
-            {
-                return BadRequest();
-            }
-
-            if (_context.Lawyers == null)
+          if (_context.Lawyers == null)
           {
               return NotFound();
           }
@@ -51,17 +46,6 @@ namespace LawyerAPI.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Lawyer>> GetLawyer(int id)
         {
-            /*
-            var path = HttpContext.Request.Path;
-            var query = HttpContext.Request.QueryString;
-            var pathAndQuery = path + query;
-            */
-            
-            if (!CheckHeaderData("ocp-apim-subscription-key") )
-            {
-                return BadRequest();
-            }
-
             if (_context.Lawyers == null)
             {
                 return NotFound();
@@ -82,11 +66,6 @@ namespace LawyerAPI.Controllers
         public async Task<IActionResult> PutLawyer(int id, Lawyer lawyer)
         {
             if (id != lawyer.ID)
-            {
-                return BadRequest();
-            }
-
-            if (!CheckHeaderData("ocp-apim-subscription-key") )
             {
                 return BadRequest();
             }
@@ -117,12 +96,8 @@ namespace LawyerAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<Lawyer>> PostLawyer(Lawyer lawyer)
         {
-            if (!CheckHeaderData("ocp-apim-subscription-key") )
-            {
-                return BadRequest();
-            }
 
-            if (_context.Lawyers == null)
+          if (_context.Lawyers == null)
           {
               return Problem("Entity set 'LawyerDbContext.Courts'  is null.");
           }
@@ -136,11 +111,6 @@ namespace LawyerAPI.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCourt(int id)
         {
-            if (!CheckHeaderData("ocp-apim-subscription-key") )
-            {
-                return BadRequest();
-            }
-
             if (_context.Lawyers == null)
             {
                 return NotFound();
