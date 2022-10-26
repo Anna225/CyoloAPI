@@ -88,7 +88,7 @@ namespace LawyerAPI.Controllers
                 .ToListAsync();            
         }
 
-        // GET: api/Custom/CourtCaseBydateAndEmail/2022-10-03/name
+        // GET: api/Custom/CourtCaseByDateAndEmail/2022-10-03/name
         [HttpGet("CourtCaseByDateAndName/{date}/{lawyername}")]
         public async Task<ActionResult<IEnumerable<dynamic>>> GetCourtCaseByDateAndName(string date, string lawyername)
         {
@@ -134,6 +134,36 @@ namespace LawyerAPI.Controllers
                 return true;
             }
             return false;
+        }
+
+        // GET: api/Custom/AllCourtTypes
+        [HttpGet("AllCourtTypes")]
+        public async Task<ActionResult<List<string?>>> GetAllCourtTypes()
+        {
+            return await _context.CourtCaseAgenda.AsNoTracking()
+                .Select(m => m.CourtType)
+                .Distinct()
+                .ToListAsync();
+        }
+
+        // GET: api/Custom/AllChamberIDs
+        [HttpGet("AllChamberIDs")]
+        public async Task<ActionResult<List<string?>>> GetAllChamberIDs()
+        {
+            return await _context.CourtCaseAgenda.AsNoTracking()
+                .Select(m => m.ChamberID)
+                .Distinct()
+                .ToListAsync();
+        }
+
+        // GET: api/Custom/AllCourtLocations
+        [HttpGet("AllCourtLocations")]
+        public async Task<ActionResult<List<string?>>> AllCourtLocations()
+        {
+            return await _context.CourtCaseAgenda.AsNoTracking()
+                .Select(m => m.CourtLocation)
+                .Distinct()
+                .ToListAsync();
         }
 
     }
