@@ -41,9 +41,9 @@ namespace LawyerAPI.Controllers
             return true;
         }
 
-        // POST: Create
+        // POST: Login
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost("/Login")]
+        [HttpPost("Login")]
         public ActionResult<bool> Login(UserDto userdto)
         {
 
