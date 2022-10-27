@@ -141,6 +141,8 @@ namespace LawyerAPI.Controllers
         public async Task<ActionResult<List<string?>>> GetAllCourtTypes()
         {
             return await _context.CourtCaseAgenda.AsNoTracking()
+                .Where(y => !string.IsNullOrEmpty(y.CourtType))
+                .OrderBy(o => o.CourtType)
                 .Select(m => m.CourtType)
                 .Distinct()
                 .ToListAsync();
@@ -151,6 +153,8 @@ namespace LawyerAPI.Controllers
         public async Task<ActionResult<List<string?>>> GetAllChamberIDs()
         {
             return await _context.CourtCaseAgenda.AsNoTracking()
+                .Where(y => !string.IsNullOrEmpty(y.ChamberID))
+                .OrderBy(o => o.ChamberID)
                 .Select(m => m.ChamberID)
                 .Distinct()
                 .ToListAsync();
@@ -158,9 +162,11 @@ namespace LawyerAPI.Controllers
 
         // GET: api/Custom/AllCourtLocations
         [HttpGet("AllCourtLocations")]
-        public async Task<ActionResult<List<string?>>> AllCourtLocations()
+        public async Task<ActionResult<List<string?>>> GetAllCourtLocations()
         {
             return await _context.CourtCaseAgenda.AsNoTracking()
+                .Where(y => !string.IsNullOrEmpty(y.CourtLocation))
+                .OrderBy(o => o.CourtLocation)
                 .Select(m => m.CourtLocation)
                 .Distinct()
                 .ToListAsync();
