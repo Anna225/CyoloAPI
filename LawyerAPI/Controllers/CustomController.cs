@@ -33,7 +33,7 @@ namespace LawyerAPI.Controllers
         public async Task<ActionResult<List<CourtCaseAgenda?>>> GetCourtCaseByDateAndCourtName(string date, string courtname)
         {
             return await _context.CourtCaseAgenda.AsNoTracking()
-                .Where(x => x.HearingDateTime == date && (x.HearingGeneral!.Contains(courtname)))
+                .Where(x => x.HearingDate == date && (x.HearingGeneral!.Contains(courtname)))
                 .GroupBy(x => x.HearingGeneral)
                 .Select(m => m.FirstOrDefault())
                 .ToListAsync();            
@@ -48,7 +48,7 @@ namespace LawyerAPI.Controllers
                            on new { LawyerName = courtcase.LawyerName, LawyerSurename = courtcase.LawyerSurename }
                            equals new { LawyerName = lawyer.Name, LawyerSurename = lawyer.SureName }
                            where lawyer.Email!.Contains(lawyeremail) &&
-                                   (courtcase.HearingDateTime == date)
+                                   (courtcase.HearingDate == date)
                            select new { courtcase, lawyer }).Distinct();
 
             if (lawyers == null)
@@ -82,7 +82,7 @@ namespace LawyerAPI.Controllers
         public async Task<ActionResult<List<CourtCaseAgenda?>>> GetAllCourtCasesByDate(string date)
         {
             return await _context.CourtCaseAgenda.AsNoTracking()
-                .Where(x => x.HearingDateTime == date)
+                .Where(x => x.HearingDate == date)
                 .GroupBy(x => x.CourtCaseNo)
                 .Select(m => m.FirstOrDefault())
                 .ToListAsync();            
@@ -97,7 +97,7 @@ namespace LawyerAPI.Controllers
                            on new { LawyerName = courtcase.LawyerName, LawyerSurename = courtcase.LawyerSurename }
                            equals new { LawyerName = lawyer.Name, LawyerSurename = lawyer.SureName }
                            where (lawyer.Name + " " + lawyer.SureName == lawyername) &&
-                                   (courtcase.HearingDateTime == date)
+                                   (courtcase.HearingDate == date)
                            select new { courtcase, lawyer }).Distinct();
 
             if (lawyers == null)
@@ -116,7 +116,7 @@ namespace LawyerAPI.Controllers
                            on new { LawyerName = courtcase.LawyerName, LawyerSurename = courtcase.LawyerSurename }
                            equals new { LawyerName = lawyer.Name, LawyerSurename = lawyer.SureName }
                            where lawyer.Phone!.Replace(" ", "").Trim().Contains(phone.Replace(" ", "").Trim()) &&
-                                   (courtcase.HearingDateTime == date)
+                                   (courtcase.HearingDate == date)
                            select new { courtcase, lawyer }).Distinct();
 
             if (lawyers == null)
