@@ -68,7 +68,6 @@ namespace LawyerAPI.Controllers
 
             var user = _context.Users
                 .Where(x => x.Email == userdto.Email)
-                .Where(x => x.Password == userdto.Password)
                 .FirstOrDefault<User>();
 
             if (user == null)
