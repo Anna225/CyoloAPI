@@ -125,7 +125,27 @@ namespace LawyerAPI.Controllers
             }
             return await lawyers.ToListAsync();
         }
-        
+
+
+
+        // GET: api/GetLawyerByEmail/admin@gmail.com
+        [HttpGet("GetLawyerByEmail/{email}")]
+        public async Task<ActionResult<Lawyer>> GetLawyerByEmail(string email)
+        {
+            if (_context.Lawyers == null)
+            {
+                return NotFound();
+            }
+            var lawyer = await _context.Lawyers.Where(z => z.Email!.Contains(email)).FirstOrDefaultAsync();
+
+            if (lawyer == null)
+            {
+                return NotFound();
+            }
+
+            return lawyer;
+        }
+
         private bool CheckHeaderData(string headerKey)
         {
             HttpContext.Request.Headers.TryGetValue(headerKey, out var headerValue);
