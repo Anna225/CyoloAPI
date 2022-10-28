@@ -60,6 +60,25 @@ namespace LawyerAPI.Controllers
             return true;
         }
 
+        // Post: IsExist
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPost("IsExist")]
+        public ActionResult<bool> IsExist(UserDto userdto)
+        {
+
+            var user = _context.Users
+                .Where(x => x.Email == userdto.Email)
+                .Where(x => x.Password == userdto.Password)
+                .FirstOrDefault<User>();
+
+            if (user == null)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         // GET: api/Auth/5
         [HttpGet("{id}")]
         public async Task<ActionResult<User>> GetUser(int id)
