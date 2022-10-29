@@ -14,21 +14,16 @@ namespace LawyerAPI.Models
         public DbSet<User> Users { get; set; } = null!;
         public DbSet<Lawyer> Lawyers { get; set; } = null!;
         public DbSet<CourtCaseAgenda> CourtCaseAgenda { get; set; } = null!;
+        public DbSet<Presentation> Presentations { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<User>().ToTable("Users");
             modelBuilder.Entity<User>().Property(f => f.ID).ValueGeneratedOnAdd();            
             modelBuilder.Entity<Court>().ToTable("Courts");
             modelBuilder.Entity<CourtCaseAgenda>().ToTable("CourtCaseAgendas");
             modelBuilder.Entity<Lawyer>().ToTable("Lawyers");
-            /*
-            modelBuilder.Entity<User>(entity =>
-            {
-                entity.HasKey(e => e.ID);
-            });
-            */
+            modelBuilder.Entity<Presentation>().ToTable("Presentations");
         }
 
     }
