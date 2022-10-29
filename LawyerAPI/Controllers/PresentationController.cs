@@ -39,17 +39,22 @@ namespace LawyerAPI.Controllers
         // POST: api/Presentations
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Presentation>> Presentation(Presentation presentation)
+        public async Task<ActionResult<string>> Presentation(Presentation presentation)
         {
 
             if (_context.Presentations == null)
             {
-                return Problem("Entity set 'LawyerDbContext.Presentations'  is null.");
+                return "There is a database error.";
             }
+            if(_context.Presentations.Where(x => x.LawyerId == presentation.LawyerId).Where(x => x.CourtCaseNo == presentation.CourtCaseNo).Any())
+            {
+                return "You have already approved this court case.";
+            }
+
             _context.Presentations.Add(presentation);
             await _context.SaveChangesAsync();
+            return "Approved successfully.";
 
-            return CreatedAtAction(nameof(GetPresentation), new { id = presentation.ID }, presentation);
         }
 
         // GET: api/Presentations/5
