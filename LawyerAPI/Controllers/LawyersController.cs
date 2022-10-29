@@ -60,6 +60,24 @@ namespace LawyerAPI.Controllers
             return lawyer;
         }
 
+        // GET: api/Lawyer/5
+        [HttpGet("ByEmail/{email}")]
+        public async Task<ActionResult<Lawyer>> GetLawyerByEmail(string email)
+        {
+            if (_context.Lawyers == null)
+            {
+                return NotFound();
+            }
+            var lawyer = await _context.Lawyers.Where(x => x.Email!.Contains(email)).FirstOrDefaultAsync();
+
+            if (lawyer == null)
+            {
+                return NotFound();
+            }
+
+            return lawyer;
+        }
+
         // PUT: api/Lawyer/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
