@@ -87,11 +87,14 @@ namespace LawyerAPI.Controllers
                            join lawyer in _context.Lawyers
                            on new { LawyerName = courtcase.LawyerName, LawyerSurename = courtcase.LawyerSurename }
                            equals new { LawyerName = lawyer.Name, LawyerSurename = lawyer.SureName }
+                           join present in _context.Presentations
+                           on new { id = lawyer.ID } equals new { id = present.LawyerId }
                            where courtcase.CourtType!.Contains(condition.CourtType!)
                            && (courtcase.HearingDate == condition.HearingDate)
                            && (courtcase.HearingTime == condition.HearingTime)
                            && (courtcase.ChamberID == condition.ChamberID)
                            && (courtcase.CourtLocation == condition.CourtLocation)
+                           && (courtcase.CourtCaseNo!.Contains(present.CourtCaseNo!))
                            select new { courtcase, lawyer }).Distinct();
 
             if (lawyers == null)
