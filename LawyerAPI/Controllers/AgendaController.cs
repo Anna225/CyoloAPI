@@ -25,17 +25,17 @@ namespace LawyerAPI.Controllers
         // POST: api/Agendas
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Agenda>> PostCourtCaseAgenda(Agenda agenda)
+        public async Task<ActionResult<Agenda>> CreateAgenda(Agenda agenda)
         {
             _context.Agendas.Add(agenda);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetCourtCaseAgenda", new { id = agenda.ID }, agenda);
+            return CreatedAtAction("GetAgenda", new { id = agenda.ID }, agenda);
         }
 
         // GET: api/Agendas/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Agenda>> GetCourtCaseAgenda(int id)
+        public async Task<ActionResult<Agenda>> GetAgenda(int id)
         {
             var agenda = await _context.Agendas.FindAsync(id);
 
