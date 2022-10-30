@@ -95,6 +95,7 @@ namespace LawyerAPI.Controllers
                            && (courtcase.ChamberID == condition.ChamberID)
                            && (courtcase.CourtLocation == condition.CourtLocation)
                            && (present.Available == 1)
+                           && (courtcase.CourtCaseNo!.Contains(condition.CourtCaseNo!))
                            select new { courtcase, lawyer }).Distinct();
 
             if (lawyers == null)
