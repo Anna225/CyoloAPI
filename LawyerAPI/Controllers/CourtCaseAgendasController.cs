@@ -51,6 +51,21 @@ namespace LawyerAPI.Controllers
             return courtCaseAgenda;
         }
 
+        // GET: api/CourtCaseAgendas/GetCourtCaseByNo/2021-A023-W
+        [HttpGet("GetCourtCaseByNo/{courtcaseno}")]
+        public async Task<ActionResult<CourtCaseAgenda>> GetCourtCaseByNo(string courtcaseno)
+        {
+            var courtCaseAgenda = await _context.CourtCaseAgenda
+                .Where(x => x.CourtCaseNo!.Contains(courtcaseno)).FirstOrDefaultAsync();
+
+            if (courtCaseAgenda == null)
+            {
+                return NotFound();
+            }
+
+            return courtCaseAgenda;
+        }
+
         // PUT: api/CourtCaseAgendas/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
