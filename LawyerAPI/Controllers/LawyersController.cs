@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using LawyerAPI.Models;
 using Microsoft.AspNetCore.Http.Extensions;
+using LawyerAPI.Helper;
 
 namespace LawyerAPI.Controllers
 {
@@ -76,6 +77,28 @@ namespace LawyerAPI.Controllers
             }
 
             return lawyer;
+        }
+
+        // POST: api/Lawyer/5
+        [HttpPost("GetByCourtCase")]
+        public async Task<ActionResult<dynamic>> GetByCourtCase(SearchDto condition)
+        {
+            var lawyers = (from courtcase in _context.CourtCaseAgenda
+                           join lawyer in _context.Lawyers
+                           on new { LawyerName = courtcase.LawyerName, LawyerSurename = courtcase.LawyerSurename }
+                           equals new { LawyerName = lawyer.Name, LawyerSurename = lawyer.SureName }
+                           where courtcase.CourtType!.Contains(condition.CourtType!)
+                           && (courtcase.HearingDate == condition.HearingDate)
+                           && (courtcase.HearingTime == condition.HearingTime)
+                           && (courtcase.ChamberID == condition.ChamberID)
+                           && (courtcase.CourtLocation == condition.CourtLocation)
+                           select new { courtcase, lawyer }).Distinct();
+
+            if (lawyers == null)
+            {
+                return NotFound();
+            }
+            return await lawyers.ToListAsync();
         }
 
         // PUT: api/Lawyer/5
