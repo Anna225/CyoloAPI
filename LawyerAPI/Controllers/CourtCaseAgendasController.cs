@@ -56,7 +56,10 @@ namespace LawyerAPI.Controllers
         public async Task<ActionResult<CourtCaseAgenda>> GetCourtCaseByNo(string courtcaseno)
         {
             var courtCaseAgenda = await _context.CourtCaseAgenda
-                .Where(x => x.CourtCaseNo!.Contains(courtcaseno)).FirstOrDefaultAsync();
+                .Where(x => x.CourtCaseNo!.Contains(courtcaseno))
+                .OrderByDescending(x => x.HearingDate)
+                .OrderByDescending(x => x.HearingTime)
+                .FirstOrDefaultAsync();
 
             if (courtCaseAgenda == null)
             {

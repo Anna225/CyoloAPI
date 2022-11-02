@@ -49,7 +49,46 @@ namespace LawyerAPI.Controllers
                            equals new { LawyerName = lawyer.Name, LawyerSurename = lawyer.SureName }
                            where lawyer.Email!.Contains(lawyeremail) &&
                                    (courtcase.HearingDate == date)
+                           orderby courtcase.HearingDate descending, courtcase.HearingTime descending
                            select new { courtcase, lawyer }).Distinct();
+
+            if (lawyers == null)
+            {
+                return NotFound();
+            }
+            return await lawyers.ToListAsync();
+        }
+
+        // GET: api/Custom/CourtCaseByEmail/demoemail
+        [HttpGet("CourtCaseByEmail/{lawyeremail}")]
+        public async Task<ActionResult<IEnumerable<dynamic>>> GetCourtCaseByEmail(string lawyeremail)
+        {
+            var lawyers = (from courtcase in _context.CourtCaseAgenda
+                           join lawyer in _context.Lawyers
+                           on new { LawyerName = courtcase.LawyerName, LawyerSurename = courtcase.LawyerSurename }
+                           equals new { LawyerName = lawyer.Name, LawyerSurename = lawyer.SureName }
+                           where lawyer.Email!.Contains(lawyeremail)
+                           orderby courtcase.HearingDate descending, courtcase.HearingTime descending
+                           select new { courtcase, lawyer }).Distinct();
+
+            if (lawyers == null)
+            {
+                return NotFound();
+            }
+            return await lawyers.ToListAsync();
+        }
+
+        // GET: api/Custom/GetAgendasByEmail/demoemail
+        [HttpGet("GetAgendasByEmail/{lawyeremail}")]
+        public async Task<ActionResult<IEnumerable<dynamic>>> GetAgendasByEmail(string lawyeremail)
+        {
+            var lawyers = (from agenda in _context.Agendas
+                           join lawyer in _context.Lawyers
+                           on new { LawyerName = agenda.FirstName, LawyerSurename = agenda.LastName }
+                           equals new { LawyerName = lawyer.Name, LawyerSurename = lawyer.SureName }
+                           where lawyer.Email!.Contains(lawyeremail)
+                           orderby agenda.HearingDate descending, agenda.HearingTime descending
+                           select new { agenda, lawyer }).Distinct();
 
             if (lawyers == null)
             {
@@ -98,6 +137,7 @@ namespace LawyerAPI.Controllers
                            equals new { LawyerName = lawyer.Name, LawyerSurename = lawyer.SureName }
                            where (lawyer.Name + " " + lawyer.SureName == lawyername) &&
                                    (courtcase.HearingDate == date)
+                           orderby courtcase.HearingDate descending, courtcase.HearingTime descending
                            select new { courtcase, lawyer }).Distinct();
 
             if (lawyers == null)
@@ -117,6 +157,7 @@ namespace LawyerAPI.Controllers
                            equals new { LawyerName = lawyer.Name, LawyerSurename = lawyer.SureName }
                            where lawyer.Phone!.Replace(" ", "").Trim().Contains(phone.Replace(" ", "").Trim()) &&
                                    (courtcase.HearingDate == date)
+                           orderby courtcase.HearingDate descending, courtcase.HearingTime descending
                            select new { courtcase, lawyer }).Distinct();
 
             if (lawyers == null)
