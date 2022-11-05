@@ -83,12 +83,9 @@ namespace LawyerAPI.Controllers
         public async Task<ActionResult<IEnumerable<dynamic>>> GetAgendasByEmail(string lawyeremail)
         {
             var lawyers = (from agenda in _context.Agendas
-                           join lawyer in _context.Lawyers
-                           on new { LawyerName = agenda.FirstName, LawyerSurename = agenda.LastName }
-                           equals new { LawyerName = lawyer.Name, LawyerSurename = lawyer.SureName }
-                           where lawyer.Email!.Contains(lawyeremail)
+                           where agenda.UploaderEmail!.Contains(lawyeremail)
                            orderby agenda.HearingDate descending, agenda.HearingTime descending
-                           select new { agenda, lawyer }).Distinct();
+                           select new { agenda }).Distinct();
 
             if (lawyers == null)
             {
