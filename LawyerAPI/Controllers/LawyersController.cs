@@ -92,7 +92,7 @@ namespace LawyerAPI.Controllers
                            where courtcase.CourtType!.Contains(condition.CourtType!)
                            && (courtcase.HearingDate == condition.HearingDate)
                            && (courtcase.HearingTime == condition.HearingTime)
-                           && (courtcase.ChamberID == condition.ChamberID)
+                           && (courtcase.ChamberID!.Contains(condition.ChamberID!))
                            && (courtcase.CourtLocation == condition.CourtLocation)
                            && (present.Available == 1)
                            && (courtcase.CourtCaseNo!.Contains(condition.CourtCaseNo!))
