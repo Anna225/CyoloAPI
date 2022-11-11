@@ -230,5 +230,17 @@ namespace LawyerAPI.Controllers
                 .ToListAsync();
         }
 
+        // GET: api/Custom/AllJurisdictions
+        [HttpGet("AllCourtLocations")]
+        public async Task<ActionResult<List<string?>>> GetAllJurisdictions()
+        {
+            return await _context.CourtCaseAgenda.AsNoTracking()
+                .Where(y => !string.IsNullOrEmpty(y.HearingGeneral))
+                .OrderBy(o => o.HearingGeneral)
+                .Select(m => m.HearingGeneral)
+                .Distinct()
+                .ToListAsync();
+        }
+
     }
 }
