@@ -89,7 +89,7 @@ namespace LawyerAPI.Controllers
                            equals new { LawyerName = lawyer.Name, LawyerSurename = lawyer.SureName }
                            join present in _context.Presentations
                            on new { id = lawyer.ID } equals new { id = present.LawyerId }
-                           where courtcase.CourtType!.Contains(condition.HearingGeneral!)
+                           where courtcase.HearingGeneral!.Contains(condition.HearingGeneral!)
                            && (courtcase.HearingDate == condition.HearingDate)
                            && (courtcase.HearingTime == condition.HearingTime)
                            && (courtcase.ChamberID!.Contains(condition.ChamberID!))
