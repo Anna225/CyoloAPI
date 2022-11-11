@@ -231,7 +231,7 @@ namespace LawyerAPI.Controllers
         }
 
         // GET: api/Custom/AllJurisdictions
-        [HttpGet("AllCourtLocations")]
+        [HttpGet("AllJurisdictions")]
         public async Task<ActionResult<List<string?>>> GetAllJurisdictions()
         {
             return await _context.CourtCaseAgenda.AsNoTracking()
