@@ -2,11 +2,11 @@
 {
     public class CourtCaseResponseDto
     {
-        public string? CourtCaseNo;
-        public string? HearingGeneral;
-        public string? HearingDate;
-        public string? HearingTime;
-        public string? ChamberID;
-        public string? HearingType;
+        public string? CourtCaseNo { get; set; }
+        public string? HearingGeneral { get; set; }
+        public string? HearingDate { get; set; }
+        public string? HearingTime { get; set; }
+        public string? ChamberID { get; set; }
+        public string? HearingType { get; set; }
     }
 }

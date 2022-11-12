@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using LawyerAPI.Models;
+using LawyerAPI.Helper;
 
 namespace LawyerAPI.Controllers
 {
@@ -44,6 +45,24 @@ namespace LawyerAPI.Controllers
               return NotFound();
           }
             return await _context.Courts.ToListAsync();
+        }
+
+        // GET: api/JuridictionTypes
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<JuridictionTypeDto>>> JuridictionTypes()
+        {
+            if (_context.Courts == null)
+            {
+                return NotFound();
+            }
+            return await _context.Courts.Select(x => new JuridictionTypeDto
+            {
+                Canton = x.Canton,
+                Division = x.Division,
+                TypeJuridiction = x.TypeJuridiction,
+                TypeJuridictionId = x.TypeJuridictionId,
+                DivisionId = x.DivisionId
+            }).ToListAsync();
         }
 
         // GET: api/Courts/5
