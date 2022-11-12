@@ -47,7 +47,7 @@ namespace LawyerAPI.Controllers
             return await _context.Courts.ToListAsync();
         }
 
-        // GET: api/JuridictionTypes
+        // GET: api/Courts/JuridictionTypes
         [HttpGet]
         public async Task<ActionResult<IEnumerable<JuridictionTypeDto>>> JuridictionTypes()
         {
