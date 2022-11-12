@@ -125,20 +125,20 @@ namespace LawyerAPI.Controllers
         [HttpGet("CourtCaseByDateAndName/{date}/{lawyername}")]
         public async Task<ActionResult<IEnumerable<dynamic>>> GetCourtCaseByDateAndName(string date, string lawyername)
         {
-            var lawyers = (from courtcase in _context.CourtCaseAgenda
-                           where (courtcase.LawyerName + " " + courtcase.LawyerSurename == lawyername) &&
-                                   (courtcase.HearingDate == date)
-                           orderby courtcase.HearingDate descending, courtcase.HearingTime descending
-                           select new { courtcase }).Distinct();
-
             //var lawyers = (from courtcase in _context.CourtCaseAgenda
-            //               join lawyer in _context.Lawyers
-            //               on new { LawyerName = courtcase.LawyerName, LawyerSurename = courtcase.LawyerSurename }
-            //               equals new { LawyerName = lawyer.Name, LawyerSurename = lawyer.SureName }
-            //               where (lawyer.Name + " " + lawyer.SureName == lawyername) &&
+            //               where (courtcase.LawyerName + " " + courtcase.LawyerSurename == lawyername) &&
             //                       (courtcase.HearingDate == date)
             //               orderby courtcase.HearingDate descending, courtcase.HearingTime descending
-            //               select new { courtcase, lawyer }).Distinct();
+            //               select new { courtcase }).Distinct();
+
+            var lawyers = (from courtcase in _context.CourtCaseAgenda
+                           join lawyer in _context.Lawyers
+                           on new { LawyerName = courtcase.LawyerName, LawyerSurename = courtcase.LawyerSurename }
+                           equals new { LawyerName = lawyer.Name, LawyerSurename = lawyer.SureName }
+                           where (lawyer.Name + " " + lawyer.SureName == lawyername) &&
+                                   (courtcase.HearingDate == date)
+                           orderby courtcase.HearingDate descending, courtcase.HearingTime descending
+                           select new { courtcase, lawyer }).Distinct();
 
             if (lawyers == null)
             {
