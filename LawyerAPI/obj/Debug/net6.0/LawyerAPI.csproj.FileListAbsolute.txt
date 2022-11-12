@@ -2110,3 +2110,7 @@ D:\CyoloAPI\LawyerAPI\obj\Debug\net6.0\refint\LawyerAPI.dll
 D:\CyoloAPI\LawyerAPI\obj\Debug\net6.0\LawyerAPI.pdb
 D:\CyoloAPI\LawyerAPI\obj\Debug\net6.0\LawyerAPI.genruntimeconfig.cache
 D:\CyoloAPI\LawyerAPI\obj\Debug\net6.0\ref\LawyerAPI.dll
+D:\CyoloAPI\LawyerAPI\bin\Debug\net6.0\Microsoft.DotNet.PlatformAbstractions.dll
+D:\CyoloAPI\LawyerAPI\bin\Debug\net6.0\Microsoft.Extensions.DependencyModel.dll
+D:\CyoloAPI\LawyerAPI\bin\Debug\net6.0\Microsoft.Extensions.PlatformAbstractions.dll
+D:\CyoloAPI\LawyerAPI\bin\Debug\net6.0\Nancy.dll

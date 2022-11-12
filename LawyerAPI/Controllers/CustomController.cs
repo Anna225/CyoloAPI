@@ -1,10 +1,7 @@
+using LawyerAPI.Helper;
 using LawyerAPI.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
-using Microsoft.AspNetCore.Http.Extensions;
 
 namespace LawyerAPI.Controllers
 {
@@ -240,6 +237,106 @@ namespace LawyerAPI.Controllers
                 .Select(m => m.HearingGeneral)
                 .Distinct()
                 .ToListAsync();
+        }
+
+        // GET: api/Custom/Test
+        [HttpGet("Test")]
+        public async Task<Tuple<int, int, IEnumerable<CourtCaseResponseDto>>> GetCourtCaseByDateAndEmailTest(
+            string date,
+            string lawyername,
+            string sortColumn,
+            string sortColumnDirection,
+            string searchValue,
+            int pageSize,
+            int skip
+        )
+        {
+            var records = _context.CourtCaseAgenda.AsQueryable();
+            //get total count of data in table
+            int totalRecord = records.Count();
+            // search data when search value found
+            if (!string.IsNullOrEmpty(searchValue))
+            {
+                records = records.Where(
+                    x => x.CourtCaseNo!.ToLower().Contains(searchValue.ToLower())
+                    || x.HearingGeneral!.ToLower().Contains(searchValue.ToLower())
+                    || x.ChamberID!.ToLower().Contains(searchValue.ToLower())
+                    || x.HearingTime!.ToLower().Contains(searchValue.ToLower())
+                    || x.HearingDate!.ToString().ToLower().Contains(searchValue.ToLower()));
+            }
+            records = records.Where(
+                    x => (x.LawyerName!.ToLower() + " " + x.LawyerSurename!.ToLower() == lawyername));
+            // get total count of records after search
+            int filterRecord = records.Count();
+            //sort data
+            if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortColumnDirection))
+            {
+                //CourtCaseNo
+                if (sortColumn == "CourtCaseNo" && sortColumnDirection == "asc")
+                {
+                    records = records.OrderBy(x => x.CourtCaseNo);
+                }
+                if (sortColumn == "CourtCaseNo" && sortColumnDirection == "desc")
+                {
+                    records = records.OrderByDescending(x => x.CourtCaseNo);
+                }
+                //HearingGeneral
+                if (sortColumn == "HearingGeneral" && sortColumnDirection == "asc")
+                {
+                    records = records.OrderBy(x => x.HearingGeneral);
+                }
+                if (sortColumn == "HearingGeneral" && sortColumnDirection == "desc")
+                {
+                    records = records.OrderByDescending(x => x.HearingGeneral);
+                }
+                //HearingTime
+                if (sortColumn == "HearingTime" && sortColumnDirection == "asc")
+                {
+                    records = records.OrderBy(x => x.HearingTime);
+                }
+                if (sortColumn == "HearingTime" && sortColumnDirection == "desc")
+                {
+                    records = records.OrderByDescending(x => x.HearingTime);
+                }
+                //HearingDate
+                if (sortColumn == "HearingDate" && sortColumnDirection == "asc")
+                {
+                    records = records.OrderBy(x => x.HearingDate);
+                }
+                if (sortColumn == "HearingDate" && sortColumnDirection == "desc")
+                {
+                    records = records.OrderByDescending(x => x.HearingDate);
+                }
+                //ChamberID
+                if (sortColumn == "ChamberID" && sortColumnDirection == "asc")
+                {
+                    records = records.OrderBy(x => x.ChamberID);
+                }
+                if (sortColumn == "ChamberID" && sortColumnDirection == "desc")
+                {
+                    records = records.OrderByDescending(x => x.ChamberID);
+                }
+            }
+                
+            //pagination
+            var courtList = records.Skip(skip).Take(pageSize).ToList().Select(x => new CourtCaseResponseDto
+            {
+                CourtCaseNo = x.CourtCaseNo,
+                HearingGeneral = x.HearingGeneral,
+                HearingDate = x.HearingDate,
+                HearingTime = x.HearingTime,
+                ChamberID = x.ChamberID,
+                HearingType = x.HearingType
+            });
+
+            Tuple<int, int, IEnumerable<CourtCaseResponseDto>> returnObj = new Tuple<int, int, IEnumerable<CourtCaseResponseDto>>
+            (
+                totalRecord,
+                filterRecord,
+                courtList
+            );           
+
+            return await Task.FromResult(returnObj);
         }
 
     }
