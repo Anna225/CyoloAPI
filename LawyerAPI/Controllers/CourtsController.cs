@@ -48,7 +48,7 @@ namespace LawyerAPI.Controllers
         }
 
         // GET: api/Courts/JuridictionTypes
-        [HttpGet]
+        [HttpGet("JuridictionTypes")]
         public async Task<ActionResult<IEnumerable<JuridictionTypeDto>>> JuridictionTypes()
         {
             if (_context.Courts == null)
