@@ -62,7 +62,9 @@ namespace LawyerAPI.Controllers
                 TypeJuridiction = x.TypeJuridiction,
                 TypeJuridictionId = x.TypeJuridictionId,
                 DivisionId = x.DivisionId
-            }).ToListAsync();
+            })
+            .OrderBy(p => p.TypeJuridiction)
+            .ToListAsync();
         }
 
         // GET: api/Courts/5
