@@ -235,13 +235,12 @@ namespace LawyerAPI.Controllers
 
         // GET: api/Custom/AllJurisdictions
         [HttpGet("AllJurisdictions")]
-        public async Task<ActionResult<List<string?>>> GetAllJurisdictions()
+        public async Task<ActionResult<List<CourtCaseAgenda?>>> GetAllJurisdictions()
         {
             return await _context.CourtCaseAgenda.AsNoTracking()
                 .Where(y => !string.IsNullOrEmpty(y.HearingGeneral))
-                .OrderBy(o => o.HearingGeneral)
-                .Select(m => m.HearingGeneral)
-                .Distinct()
+                .GroupBy(o => o.HearingGeneral)
+                .Select(g => g.OrderByDescending(r => r.ID).FirstOrDefault())
                 .ToListAsync();
         }
 
