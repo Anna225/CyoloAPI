@@ -241,7 +241,8 @@ namespace LawyerAPI.Controllers
 
         // GET: api/Custom/Test
         [HttpGet("Test")]
-        public async Task<Tuple<int, int, IEnumerable<CourtCaseResponseDto>>> GetCourtCaseByDateAndEmailTest(
+        public async Task<Tuple<int, int, int, IEnumerable<CourtCaseResponseDto>>> GetCourtCaseByDateAndEmailTest(
+            int draw,
             string date,
             string lawyername,
             string sortColumn,
@@ -266,6 +267,8 @@ namespace LawyerAPI.Controllers
             }
             records = records.Where(
                     x => (x.LawyerName!.ToLower() + " " + x.LawyerSurename!.ToLower() == lawyername));
+            records = records.Where(
+                    x => (x.HearingDate == date));
             // get total count of records after search
             int filterRecord = records.Count();
             //sort data
@@ -329,8 +332,9 @@ namespace LawyerAPI.Controllers
                 HearingType = x.HearingType
             });
 
-            Tuple<int, int, IEnumerable<CourtCaseResponseDto>> returnObj = new Tuple<int, int, IEnumerable<CourtCaseResponseDto>>
+            Tuple<int, int, int, IEnumerable<CourtCaseResponseDto>> returnObj = new Tuple<int, int, int, IEnumerable<CourtCaseResponseDto>>
             (
+                draw,
                 totalRecord,
                 filterRecord,
                 courtList
