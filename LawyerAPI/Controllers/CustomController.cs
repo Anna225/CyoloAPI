@@ -246,10 +246,10 @@ namespace LawyerAPI.Controllers
             string date,
             string lawyername,
             string sortColumn,
-            string sortColumnDirection,
-            string searchValue,
-            int pageSize,
-            int skip
+            string sortColumnDirection = "asc",
+            string searchValue = "",
+            int pageSize = 10,
+            int skip = 0
         )
         {
             var records = _context.CourtCaseAgenda.AsQueryable();
@@ -259,11 +259,11 @@ namespace LawyerAPI.Controllers
             if (!string.IsNullOrEmpty(searchValue))
             {
                 records = records.Where(
-                    x => x.CourtCaseNo!.ToLower().Contains(searchValue.ToLower())
-                    || x.HearingGeneral!.ToLower().Contains(searchValue.ToLower())
-                    || x.ChamberID!.ToLower().Contains(searchValue.ToLower())
-                    || x.HearingTime!.ToLower().Contains(searchValue.ToLower())
-                    || x.HearingDate!.ToString().ToLower().Contains(searchValue.ToLower()));
+                    x => x.CourtCaseNo!.Contains(searchValue)
+                    || x.HearingGeneral!.Contains(searchValue)
+                    || x.ChamberID!.Contains(searchValue)
+                    || x.HearingTime!.Contains(searchValue)
+                    || x.HearingDate!.Contains(searchValue));
             }
             records = records.Where(
                     x => (x.LawyerName!.ToLower() + " " + x.LawyerSurename!.ToLower() == lawyername));
@@ -322,7 +322,7 @@ namespace LawyerAPI.Controllers
             }
                 
             //pagination
-            var courtList = records.Skip(skip).Take(pageSize).ToList().Select(x => new CourtCaseResponseDto
+            var courtList = records.Skip(skip).Take(pageSize).Select(x => new CourtCaseResponseDto
             {
                 CourtCaseNo = x.CourtCaseNo,
                 HearingGeneral = x.HearingGeneral,
@@ -330,7 +330,7 @@ namespace LawyerAPI.Controllers
                 HearingTime = x.HearingTime,
                 ChamberID = x.ChamberID,
                 HearingType = x.HearingType
-            });
+            }).ToList();
 
             Tuple<int, int, int, IEnumerable<CourtCaseResponseDto>> returnObj = new Tuple<int, int, int, IEnumerable<CourtCaseResponseDto>>
             (
