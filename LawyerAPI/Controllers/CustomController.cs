@@ -125,12 +125,6 @@ namespace LawyerAPI.Controllers
         [HttpGet("CourtCaseByDateAndName/{date}/{lawyername}")]
         public async Task<ActionResult<IEnumerable<dynamic>>> GetCourtCaseByDateAndName(string date, string lawyername)
         {
-            //var lawyers = (from courtcase in _context.CourtCaseAgenda
-            //               where (courtcase.LawyerName + " " + courtcase.LawyerSurename == lawyername) &&
-            //                       (courtcase.HearingDate == date)
-            //               orderby courtcase.HearingDate descending, courtcase.HearingTime descending
-            //               select new { courtcase }).Distinct();
-
             var lawyers = (from courtcase in _context.CourtCaseAgenda
                            join lawyer in _context.Lawyers
                            on new { LawyerName = courtcase.LawyerName, LawyerSurename = courtcase.LawyerSurename }
@@ -235,12 +229,13 @@ namespace LawyerAPI.Controllers
 
         // GET: api/Custom/AllJurisdictions
         [HttpGet("AllJurisdictions")]
-        public async Task<ActionResult<List<CourtCaseAgenda?>>> GetAllJurisdictions()
+        public async Task<ActionResult<List<string?>>> GetAllJurisdictions()
         {
             return await _context.CourtCaseAgenda.AsNoTracking()
                 .Where(y => !string.IsNullOrEmpty(y.HearingGeneral))
-                .GroupBy(o => o.HearingGeneral)
-                .Select(g => g.OrderByDescending(r => r.ID).FirstOrDefault())
+                .OrderBy(o => o.HearingGeneral)
+                .Select(m => m.HearingGeneral)
+                .Distinct()
                 .ToListAsync();
         }
 
