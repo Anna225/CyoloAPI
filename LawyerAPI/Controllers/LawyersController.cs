@@ -83,9 +83,9 @@ namespace LawyerAPI.Controllers
         [HttpPost("GetByCourtCase")]
         public async Task<ActionResult<dynamic>> GetByCourtCase(SearchDto condition)
         {
-            var lawyers = (from courtcase in _context.CourtCaseAgenda
-                           join present in _context.Presentations
-                           on new { id = courtcase.CourtCaseNo } equals new { id = present.CourtCaseNo }
+            var lawyers = (from present in _context.Presentations
+                           join courtcase in _context.CourtCaseAgenda
+                           on new { id = present.CourtCaseNo } equals new { id = courtcase.CourtCaseNo }
                            join lawyer in _context.Lawyers
                            on new { LawyerName = courtcase.LawyerName, LawyerSurename = courtcase.LawyerSurename }
                            equals new { LawyerName = lawyer.Name, LawyerSurename = lawyer.SureName }
