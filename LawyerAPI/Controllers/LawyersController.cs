@@ -84,15 +84,15 @@ namespace LawyerAPI.Controllers
         public async Task<ActionResult<dynamic>> GetByCourtCase(SearchDto condition)
         {
             var lawyers = (from courtcase in _context.CourtCaseAgenda
+                           join present in _context.Presentations
+                           on new { id = courtcase.CourtCaseNo } equals new { id = present.CourtCaseNo }
                            join lawyer in _context.Lawyers
                            on new { LawyerName = courtcase.LawyerName, LawyerSurename = courtcase.LawyerSurename }
                            equals new { LawyerName = lawyer.Name, LawyerSurename = lawyer.SureName }
-                           join present in _context.Presentations
-                           on new { id = lawyer.ID } equals new { id = present.LawyerId }
                            where courtcase.HearingGeneral!.Contains(condition.HearingGeneral!)
                            && (courtcase.HearingDate == condition.HearingDate)
                            && (courtcase.HearingTime == condition.HearingTime)
-                           && (courtcase.ChamberID!.Contains(condition.ChamberID!))
+                           && (courtcase.ChamberID == condition.ChamberID)
                            && (present.Available == 1)
                            select new { lawyer }).Distinct();
 
