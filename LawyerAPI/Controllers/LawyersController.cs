@@ -83,24 +83,50 @@ namespace LawyerAPI.Controllers
         [HttpPost("GetByCourtCase")]
         public async Task<ActionResult<dynamic>> GetByCourtCase(SearchDto condition)
         {
-            var lawyers = (from present in _context.Presentations
-                           join lawyer in _context.Lawyers
-                           on new { id = present.LawyerId, val = present.Available } 
-                           equals new { id = lawyer.ID, val = 1 }
-                           join courtcase in _context.CourtCaseAgenda
-                           on new { courtno = present.CourtCaseNo }
-                           equals new { courtno = courtcase.CourtCaseNo }
-                           where courtcase.HearingGeneral == condition.HearingGeneral
-                           && (courtcase.HearingDate == condition.HearingDate)
-                           && (courtcase.HearingTime == condition.HearingTime)
-                           && (courtcase.ChamberID == condition.ChamberID)
-                           select new { lawyer }).Distinct();
-
-            if (lawyers == null)
+            if (condition.ChamberID == null || condition.ChamberID == "")
             {
-                return NotFound();
+                var lawyers = (from present in _context.Presentations
+                               join lawyer in _context.Lawyers
+                               on new { id = present.LawyerId, val = present.Available }
+                               equals new { id = lawyer.ID, val = 1 }
+                               join courtcase in _context.CourtCaseAgenda
+                               on new { courtno = present.CourtCaseNo }
+                               equals new { courtno = courtcase.CourtCaseNo }
+                               where courtcase.HearingGeneral == condition.HearingGeneral
+                               && (courtcase.HearingDate == condition.HearingDate)
+                               && (courtcase.HearingTime == condition.HearingTime)
+                               select new { lawyer }).Distinct();
+
+                if (lawyers == null)
+                {
+                    return NotFound();
+                }
+                return await lawyers.ToListAsync();
             }
-            return await lawyers.ToListAsync();
+            else
+            {
+                var lawyers = (from present in _context.Presentations
+                               join lawyer in _context.Lawyers
+                               on new { id = present.LawyerId, val = present.Available }
+                               equals new { id = lawyer.ID, val = 1 }
+                               join courtcase in _context.CourtCaseAgenda
+                               on new { courtno = present.CourtCaseNo }
+                               equals new { courtno = courtcase.CourtCaseNo }
+                               where courtcase.HearingGeneral == condition.HearingGeneral
+                               && (courtcase.HearingDate == condition.HearingDate)
+                               && (courtcase.HearingTime == condition.HearingTime)
+                               && (courtcase.ChamberID == condition.ChamberID)
+                               select new { lawyer }).Distinct();
+
+                if (lawyers == null)
+                {
+                    return NotFound();
+                }
+                return await lawyers.ToListAsync();
+            }
+
+            return NotFound();
+
         }
 
         // PUT: api/Lawyer/5
