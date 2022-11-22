@@ -40,20 +40,27 @@ namespace LawyerAPI.Controllers
         [HttpGet("CourtCaseByDateAndEmail/{date}/{lawyeremail}")]
         public async Task<ActionResult<IEnumerable<dynamic>>> GetCourtCaseByDateAndEmail(string date, string lawyeremail)
         {
-            var lawyers = (from courtcase in _context.CourtCaseAgenda
-                           join lawyer in _context.Lawyers
-                           on new { LawyerName = courtcase.LawyerName, LawyerSurename = courtcase.LawyerSurename }
-                           equals new { LawyerName = lawyer.Name, LawyerSurename = lawyer.SureName }
-                           where lawyer.Email!.Contains(lawyeremail) &&
-                                   (courtcase.HearingDate == date)
-                           orderby courtcase.HearingDate descending, courtcase.HearingTime descending
-                           select new { courtcase, lawyer }).Distinct();
+            var user = _context.Lawyers
+                .Where(x => x.Email!.Contains(lawyeremail))
+                .FirstOrDefault();
 
-            if (lawyers == null)
+            var courtcases = _context.CourtCaseAgenda
+                .Where(x => x.LawyerName == user!.Name && x.LawyerSurename == user!.SureName);
+
+            //var lawyers = (from courtcase in _context.CourtCaseAgenda
+            //               join lawyer in _context.Lawyers
+            //               on new { LawyerName = courtcase.LawyerName, LawyerSurename = courtcase.LawyerSurename }
+            //               equals new { LawyerName = lawyer.Name, LawyerSurename = lawyer.SureName }
+            //               where lawyer.Email!.Contains(lawyeremail) &&
+            //                       (courtcase.HearingDate == date)
+            //               orderby courtcase.HearingDate descending, courtcase.HearingTime descending
+            //               select new { courtcase, lawyer }).Distinct();
+
+            if (courtcases == null)
             {
                 return NotFound();
             }
-            return await lawyers.ToListAsync();
+            return await courtcases.ToListAsync();
         }
 
         // GET: api/Custom/CourtCaseByEmail/demoemail

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "D1TpF6NqpH1w781Cfke71oMEJphneYYchVbk7A74GvGlYiiisuvvuivfa3ieFz6feFNaE/PjrpOAD+JYP/c+0g==",
+  "dgSpecHash": "lDexD1NWF4b1UZw9jDkw7EBT9VCGvHCeke+dgQiB6IGDiXybtDPkihJvDTk87uu24fM9WPt8vdpdGvzBaKf/NQ==",
   "success": true,
-  "projectFilePath": "D:\\CyoloAPI\\LawyerAPI\\LawyerAPI.csproj",
+  "projectFilePath": "D:\\CYOLO\\BASIC\\CyoloAPI\\LawyerAPI\\LawyerAPI.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Yaroslov\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\Yaroslov\\.nuget\\packages\\messagepack\\2.1.152\\messagepack.2.1.152.nupkg.sha512",

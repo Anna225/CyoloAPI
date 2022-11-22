@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\CyoloAPI\\LawyerAPI\\LawyerAPI.csproj": {}
+    "D:\\CYOLO\\BASIC\\CyoloAPI\\LawyerAPI\\LawyerAPI.csproj": {}
   },
   "projects": {
-    "D:\\CyoloAPI\\LawyerAPI\\LawyerAPI.csproj": {
+    "D:\\CYOLO\\BASIC\\CyoloAPI\\LawyerAPI\\LawyerAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\CyoloAPI\\LawyerAPI\\LawyerAPI.csproj",
+        "projectUniqueName": "D:\\CYOLO\\BASIC\\CyoloAPI\\LawyerAPI\\LawyerAPI.csproj",
         "projectName": "LawyerAPI",
-        "projectPath": "D:\\CyoloAPI\\LawyerAPI\\LawyerAPI.csproj",
+        "projectPath": "D:\\CYOLO\\BASIC\\CyoloAPI\\LawyerAPI\\LawyerAPI.csproj",
         "packagesPath": "C:\\Users\\Yaroslov\\.nuget\\packages\\",
-        "outputPath": "D:\\CyoloAPI\\LawyerAPI\\obj\\",
+        "outputPath": "D:\\CYOLO\\BASIC\\CyoloAPI\\LawyerAPI\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

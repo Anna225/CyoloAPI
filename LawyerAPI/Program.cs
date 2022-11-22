@@ -10,6 +10,8 @@ builder.Services.AddControllers();
 /////////////////////////////////
 builder.Services.AddDbContext<LawyerDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddDbContext<DemoDbContext>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DemoConnection")));
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
