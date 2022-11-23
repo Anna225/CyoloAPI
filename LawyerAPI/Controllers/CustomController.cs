@@ -45,7 +45,7 @@ namespace LawyerAPI.Controllers
                 .FirstOrDefault();
 
             var courtcases = _context.CourtCaseAgenda
-                .Where(x => x.LawyerName == user!.Name && x.LawyerSurename == user!.SureName);
+                .Where(x => x.LawyerName == user!.Name && x.LawyerSurename == user!.SureName && x.HearingDate == date);
 
             //var lawyers = (from courtcase in _context.CourtCaseAgenda
             //               join lawyer in _context.Lawyers
