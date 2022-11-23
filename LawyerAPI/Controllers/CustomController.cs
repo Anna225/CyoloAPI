@@ -42,10 +42,16 @@ namespace LawyerAPI.Controllers
         {
             var user = _context.Lawyers
                 .Where(x => x.Email!.Contains(lawyeremail))
+                .Distinct()
                 .FirstOrDefault();
 
             var courtcases = _context.CourtCaseAgenda
-                .Where(x => x.LawyerName == user!.Name && x.LawyerSurename == user!.SureName && x.HearingDate == date);
+                .Where(
+                    x => x.LawyerName == user!.Name && 
+                    x.LawyerSurename == user!.SureName && 
+                    x.HearingDate == date)
+                .OrderByDescending(x => x.HearingDate)
+                .ThenByDescending(x => x.HearingTime).Distinct();
 
             //var lawyers = (from courtcase in _context.CourtCaseAgenda
             //               join lawyer in _context.Lawyers
@@ -132,14 +138,22 @@ namespace LawyerAPI.Controllers
         [HttpGet("CourtCaseByDateAndName/{date}/{lawyername}")]
         public async Task<ActionResult<IEnumerable<dynamic>>> GetCourtCaseByDateAndName(string date, string lawyername)
         {
-            var lawyers = (from courtcase in _context.CourtCaseAgenda
-                           join lawyer in _context.Lawyers
-                           on new { LawyerName = courtcase.LawyerName, LawyerSurename = courtcase.LawyerSurename }
-                           equals new { LawyerName = lawyer.Name, LawyerSurename = lawyer.SureName }
-                           where (lawyer.Name + " " + lawyer.SureName == lawyername) &&
-                                   (courtcase.HearingDate == date)
-                           orderby courtcase.HearingDate descending, courtcase.HearingTime descending
-                           select new { courtcase, lawyer }).Distinct();
+            var lawyers = _context.CourtCaseAgenda
+                .Where(x => 
+                    (x.LawyerName + " " + x.LawyerSurename) == lawyername && 
+                    (x.HearingDate == date))
+                .OrderByDescending(x => x.HearingDate)
+                .ThenByDescending(x => x.HearingTime)
+                .Distinct();
+
+            //var lawyers = (from courtcase in _context.CourtCaseAgenda
+            //               join lawyer in _context.Lawyers
+            //               on new { LawyerName = courtcase.LawyerName, LawyerSurename = courtcase.LawyerSurename }
+            //               equals new { LawyerName = lawyer.Name, LawyerSurename = lawyer.SureName }
+            //               where (lawyer.Name + " " + lawyer.SureName == lawyername) &&
+            //                       (courtcase.HearingDate == date)
+            //               orderby courtcase.HearingDate descending, courtcase.HearingTime descending
+            //               select new { courtcase, lawyer }).Distinct();
 
             if (lawyers == null)
             {
