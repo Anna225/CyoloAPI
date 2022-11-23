@@ -58,7 +58,7 @@ namespace LawyerAPI.Controllers
             var courtCaseAgenda = await _context.CourtCaseAgenda
                 .Where(x => x.CourtCaseNo!.Contains(courtcaseno))
                 .OrderByDescending(x => x.HearingDate)
-                .OrderByDescending(x => x.HearingTime)
+                .ThenByDescending(x => x.HearingTime)
                 .FirstOrDefaultAsync();
 
             if (courtCaseAgenda == null)
