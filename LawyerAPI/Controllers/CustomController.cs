@@ -40,33 +40,33 @@ namespace LawyerAPI.Controllers
         [HttpGet("CourtCaseByDateAndEmail/{date}/{lawyeremail}")]
         public async Task<ActionResult<IEnumerable<dynamic>>> GetCourtCaseByDateAndEmail(string date, string lawyeremail)
         {
-            var user = _context.Lawyers
-                .Where(x => x.Email!.Contains(lawyeremail))
-                .Distinct()
-                .FirstOrDefault();
+            //var user = _context.Lawyers
+            //    .Where(x => x.Email!.Contains(lawyeremail))
+            //    .Distinct()
+            //    .FirstOrDefault();
 
-            var courtcases = _context.CourtCaseAgenda
-                .Where(
-                    x => x.LawyerName == user!.Name && 
-                    x.LawyerSurename == user!.SureName && 
-                    x.HearingDate == date)
-                .OrderByDescending(x => x.HearingDate)
-                .ThenByDescending(x => x.HearingTime).Distinct();
+            //var courtcases = _context.CourtCaseAgenda
+            //    .Where(
+            //        x => x.LawyerName == user!.Name && 
+            //        x.LawyerSurename == user!.SureName && 
+            //        x.HearingDate == date)
+            //    .OrderByDescending(x => x.HearingDate)
+            //    .ThenByDescending(x => x.HearingTime).Distinct();
 
-            //var lawyers = (from courtcase in _context.CourtCaseAgenda
-            //               join lawyer in _context.Lawyers
-            //               on new { LawyerName = courtcase.LawyerName, LawyerSurename = courtcase.LawyerSurename }
-            //               equals new { LawyerName = lawyer.Name, LawyerSurename = lawyer.SureName }
-            //               where lawyer.Email!.Contains(lawyeremail) &&
-            //                       (courtcase.HearingDate == date)
-            //               orderby courtcase.HearingDate descending, courtcase.HearingTime descending
-            //               select new { courtcase, lawyer }).Distinct();
+            var lawyers = (from courtcase in _context.CourtCaseAgenda
+                           join lawyer in _context.Lawyers
+                           on new { LawyerName = courtcase.LawyerName, LawyerSurename = courtcase.LawyerSurename }
+                           equals new { LawyerName = lawyer.Name, LawyerSurename = lawyer.SureName }
+                           where lawyer.Email!.Contains(lawyeremail) &&
+                                   (courtcase.HearingDate == date)
+                           orderby courtcase.HearingDate descending, courtcase.HearingTime descending
+                           select new { courtcase, lawyer }).Distinct();
 
-            if (courtcases == null)
+            if (lawyers == null)
             {
                 return NotFound();
             }
-            return await courtcases.ToListAsync();
+            return await lawyers.ToListAsync();
         }
 
         // GET: api/Custom/CourtCaseByEmail/demoemail
